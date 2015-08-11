@@ -122,7 +122,6 @@ public class BankApp {
 			date = df.parse(cunvertCurrentDate);
 			// end input
 			// Calculate balance
-			double acctnum;
 			if (type.equalsIgnoreCase("Deposit")) {
 				map.get(number2).calbal_p(amount);
 			} else {
@@ -205,7 +204,6 @@ public class BankApp {
 		}
 		System.out.println("********************************************");
 		for (Entry<Integer, Transaction> entry : map2.entrySet()) {
-			Integer key = entry.getKey();
 			Integer num = entry.getValue().getAcct_num();
 			String type1 = entry.getValue().getTransaction_type();
 			double amount1 = entry.getValue().getAmount();
