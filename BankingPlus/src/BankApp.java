@@ -21,7 +21,8 @@ public class BankApp {
 
 		// Read from file myText.txt
 		try {
-			File file = new File(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
+			File file = new File(System.getProperty("user.dir")
+					+ File.separatorChar + "myText.txt");
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine()) {
@@ -43,13 +44,14 @@ public class BankApp {
 		}
 
 		// test reading from file:
-		//System.out.println(map.get(8001).getAccount_name());
+		// System.out.println(map.get(8001).getAccount_name());
 
 		// Adding accounts to Hashmap.
 		int choice;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
 		System.out.println("Please create the user account(s)");
-		System.out.println("******************************************************");
+		System.out
+				.println("******************************************************");
 		choice = Validator.getInt(in,
 				"Enter an account # or 0 to stop entering accounts : ");
 		while (choice != 0) {
@@ -69,12 +71,10 @@ public class BankApp {
 						+ bal + ".");
 				System.out.println("The account holder is " + name);
 				System.out.println("---------------------------------------------------------");
-				choice = Validator.getInt(in,
-						"Enter an account # or 0 to stop entering accounts : ");
+				choice = Validator.getInt(in,"Enter an account # or 0 to stop entering accounts : ");
 			} else {
 				System.out.println("Account already exist!");
-				choice = Validator.getInt(in,
-						"Enter an account # or 0 to stop entering accounts : ");
+				choice = Validator.getInt(in,"Enter an account # or 0 to stop entering accounts : ");
 			}
 		}
 		// Start to input a transaction
@@ -83,12 +83,10 @@ public class BankApp {
 		int number2;
 		double amount = 0;
 		int i = 0;
-		choice2 = Validator
-				.getType(
-						in,
-						"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
+		choice2 = Validator.getType(in,"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
 
 		while (!choice2.equalsIgnoreCase("q")) {
+			
 			if (choice2.equalsIgnoreCase("c")) {
 				type = "Check";
 			} else if (choice2.equalsIgnoreCase("dc")) {
@@ -103,14 +101,13 @@ public class BankApp {
 			while (isValid == true) {
 				if (!map.containsKey(number2)) {
 					System.out.println("Account does not exist!");
-					isValid=true;
+					isValid = true;
 					number2 = Validator.getInt(in, "Enter the account # :");
 				} else {
-					isValid=false;
+					isValid = false;
 				}
 			}
-			amount = Validator.getDouble(in, "Enter the amount of the "
-					+ type + " :");
+			amount = Validator.getDouble(in, "Enter the amount of the " + type+ " :");
 			System.out.println("Enter the date of the " + type + " :");
 			String aaa = in.next();
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -118,46 +115,89 @@ public class BankApp {
 			Date date = new Date();
 			date = df.parse(cunvertCurrentDate);
 			// end input
-			// Calculate balance
+			//Define temp_balance
+			double temp_balance=map.get(number2).getAccount_bal();
+			// Add to transaction
+						Transaction trac = new Transaction();
+						trac.setAcct_num(number2);
+						trac.setTransaction_type(type);
+						trac.setAmount(amount);
+						trac.setDate(date);
+						map2.put(i, trac);
+// sort transaction map.	
+		
+			int j;
+			Transaction temp = new Transaction();
+			for (j = 0; j <map2.size(); j++) {
+				for (int z = 1 ; z < (map2.size() - j); z++) {
+					double aa = getElapsedDay(map2.get(z - 1).getDate());
+					double bb = getElapsedDay(map2.get(z).getDate());
+					if (aa > bb) { // swap the elements!
+						temp = map2.get(z - 1);
+						map2.put(z - 1, map2.get(z));
+						map2.put(z, temp);
+					}
+				}
+			}
+			// Operating on accounts.2
+			int x, acctnum;
+			for (x = 0; x <map2.size(); x++) {
+				if (map2.get(x).getTransaction_type().equalsIgnoreCase("Deposit")) {
+					acctnum = map2.get(x).getAcct_num();
+					map.get(acctnum).calbal_p(map2.get(x).getAmount());
+				} else {
+					acctnum = map2.get(x).getAcct_num();
+					map.get(acctnum).calbal_m(map2.get(x).getAmount());
+				}
+			}
+			
+			System.out.println("The balance of account# " + number2 + " is "+ map.get(number2).getAccount_bal() + ".");
+			System.out.println("The account holder is "+ map.get(number2).getAccount_name());
+			System.out.println("---------------------------------------------------------");
+			
+	
+	/*		// Calculate balance
 			if (type.equalsIgnoreCase("Deposit")) {
 				map.get(number2).calbal_p(amount);
 			} else {
 				map.get(number2).calbal_m(amount);
 			}
-
-			System.out.println("The balance of account# " + number2 + " is "
-					+ map.get(number2).getAccount_bal() + ".");
-			System.out.println("The account holder is "
-					+ map.get(number2).getAccount_name());
-			System.out.println("---------------------------------------------------------");
-			// Add to transaction
-			Transaction trac = new Transaction();
-			trac.setAcct_num(number2);
-			trac.setTransaction_type(type);
-			trac.setAmount(amount);
-			trac.setDate(date);
-			map2.put(i, trac);
+*/
+			
+			//Recover the balance.
+			map.get(number2).setAccount_bal(temp_balance);
+			System.out.println(map.get(number2).getAccount_bal());
 			i++;
 			choice2 = Validator.getType(in,"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
 
 		}
-		/*
-		 * // sort transaction map. int j; Transaction temp = new Transaction();
-		 * for (j = 0; j < i; j++) { for (int z = 1; z < (i - j); z++) { double
-		 * aa = getElapsedDay(map2.get(z - 1).getDate()); double bb =
-		 * getElapsedDay(map2.get(z).getDate()); if (aa > bb) { // swap the
-		 * elements! temp = map2.get(z - 1); map2.put(z - 1, map2.get(z));
-		 * map2.put(z, temp); } } }
-		 * 
-		 * // Operating on accounts.2 int x, y, acctnum;
-		 * 
-		 * for (x = 0; x < i; x++) { if
-		 * (map2.get(x).getTransaction_type().equalsIgnoreCase("Deposit")) {
-		 * acctnum = map2.get(x).getAcct_num();
-		 * map.get(acctnum).calbal_p(map2.get(x).getAmount()); } else { acctnum
-		 * = map2.get(x).getAcct_num();
-		 * map.get(acctnum).calbal_m(map2.get(x).getAmount()); } }
-		 */
+
+		// sort transaction map.	
+					int j;
+					Transaction temp = new Transaction();
+					for (j = 0; j < i; j++) {
+						for (int z = 1; z < (i - j); z++) {
+							double aa = getElapsedDay(map2.get(z - 1).getDate());
+							double bb = getElapsedDay(map2.get(z).getDate());
+							if (aa > bb) { // swap the elements!
+								temp = map2.get(z - 1);
+								map2.put(z - 1, map2.get(z));
+								map2.put(z, temp);
+							}
+						}
+					}
+					// Operating on accounts.2
+					int x, acctnum;
+					for (x = 0; x < i; x++) {
+						if (map2.get(x).getTransaction_type().equalsIgnoreCase("Deposit")) {
+							acctnum = map2.get(x).getAcct_num();
+							map.get(acctnum).calbal_p(map2.get(x).getAmount());
+						} else {
+							acctnum = map2.get(x).getAcct_num();
+							map.get(acctnum).calbal_m(map2.get(x).getAmount());
+						}
+					}
+		
 		
 
 		// print account and transaction.
@@ -182,10 +222,12 @@ public class BankApp {
 			System.out.println("Amount: " + amount1);
 			System.out.println();
 		}
-		String choice3 = Validator.getString(in,"Do you want to close an account?(y/n)");
+		String choice3 = Validator.getString(in,
+				"Do you want to close an account?(y/n)");
 
 		while (choice3.equalsIgnoreCase("y")) {
-			int acct_n = Validator.getInt(in,"Please enter the account number: ");
+			int acct_n = Validator.getInt(in,
+					"Please enter the account number: ");
 			double bal3 = map.get(acct_n).getAccount_bal();
 			if (bal3 == 0) {
 				map.remove(acct_n);
@@ -194,33 +236,37 @@ public class BankApp {
 				System.out.println("The balance of account# " + acct_n + " is "
 						+ bal3 + " , cannot be removed!");
 			}
-			choice3 = Validator.getString(in,"Do you want to close an account?(y/n)");
+			choice3 = Validator.getString(in,
+					"Do you want to close an account?(y/n)");
 		}
-		
-		// Empty myText.txt
-				//System.out.println(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
-				FileWriter fileOut = new FileWriter(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
-				fileOut.write("");
-				fileOut.close();
 
-				// Write the whole account map to myText.txt
-				PrintWriter writer = null;
-				try {
-					writer = new PrintWriter(new File(System.getProperty("user.dir") + File.separatorChar +"myText.txt"));
-				} catch (FileNotFoundException e) {
-					System.out.println("File does not exist!");
-				} finally {
-					Iterator<Integer> iterator = map.keySet().iterator();
-					while (iterator.hasNext()) {
-						int key = iterator.next();
-						// String value = map.get(key).toString();
-						int temp_num = map.get(key).getAccount_num();
-						String temp_name = map.get(key).getAccount_name();
-						double temp_bal = map.get(key).getAccount_bal();
-						writer.println(temp_num + "," + temp_name + "," + temp_bal);
-					}
-				}
-				writer.close();
+		// Empty myText.txt
+		// System.out.println(System.getProperty("user.dir") +
+		// File.separatorChar +"myText.txt");
+		FileWriter fileOut = new FileWriter(System.getProperty("user.dir")
+				+ File.separatorChar + "myText.txt");
+		fileOut.write("");
+		fileOut.close();
+
+		// Write the whole account map to myText.txt
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(System.getProperty("user.dir")
+					+ File.separatorChar + "myText.txt"));
+		} catch (FileNotFoundException e) {
+			System.out.println("File does not exist!");
+		} finally {
+			Iterator<Integer> iterator = map.keySet().iterator();
+			while (iterator.hasNext()) {
+				int key = iterator.next();
+				// String value = map.get(key).toString();
+				int temp_num = map.get(key).getAccount_num();
+				String temp_name = map.get(key).getAccount_name();
+				double temp_bal = map.get(key).getAccount_bal();
+				writer.println(temp_num + "," + temp_name + "," + temp_bal);
+			}
+		}
+		writer.close();
 		System.out.println("Welcome back!");
 	}
 
