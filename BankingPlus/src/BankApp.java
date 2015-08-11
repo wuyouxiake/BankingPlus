@@ -50,8 +50,7 @@ public class BankApp {
 		int choice;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
 		System.out.println("Please create the user account(s)");
-		System.out
-				.println("******************************************************");
+		System.out.println("******************************************************");
 		choice = Validator.getInt(in,
 				"Enter an account # or 0 to stop entering accounts : ");
 		while (choice != 0) {
@@ -70,8 +69,7 @@ public class BankApp {
 				System.out.println("The balance of account# " + number + " is "
 						+ bal + ".");
 				System.out.println("The account holder is " + name);
-				System.out
-						.println("---------------------------------------------------------");
+				System.out.println("---------------------------------------------------------");
 				choice = Validator.getInt(in,
 						"Enter an account # or 0 to stop entering accounts : ");
 			} else {
@@ -132,8 +130,7 @@ public class BankApp {
 					+ map.get(number2).getAccount_bal() + ".");
 			System.out.println("The account holder is "
 					+ map.get(number2).getAccount_name());
-			System.out
-					.println("---------------------------------------------------------");
+			System.out.println("---------------------------------------------------------");
 			// Add to transaction
 			Transaction trac = new Transaction();
 			trac.setAcct_num(number2);
@@ -142,10 +139,7 @@ public class BankApp {
 			trac.setDate(date);
 			map2.put(i, trac);
 			i++;
-			choice2 = Validator
-					.getType(
-							in,
-							"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
+			choice2 = Validator.getType(in,"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
 
 		}
 		/*
@@ -166,22 +160,18 @@ public class BankApp {
 		 * map.get(acctnum).calbal_m(map2.get(x).getAmount()); } }
 		 */
 		// Empty myText.txt
-		FileWriter fileOut = new FileWriter(
-				"C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt");
+		FileWriter fileOut = new FileWriter("C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt");
 		fileOut.write("");
 		fileOut.close();
 
 		// Write the whole account map to myText.txt
 		PrintWriter writer = null;
 		try {
-			writer = new PrintWriter(
-					new File(
-							"C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt"));
+			writer = new PrintWriter(new File("C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("File does not exist!");
 		} finally {
 			Iterator<Integer> iterator = map.keySet().iterator();
-
 			while (iterator.hasNext()) {
 				int key = iterator.next();
 				// String value = map.get(key).toString();
@@ -215,12 +205,10 @@ public class BankApp {
 			System.out.println("Amount: " + amount1);
 			System.out.println();
 		}
-		String choice3 = Validator.getString(in,
-				"Do you want to close an account?(y/n)");
+		String choice3 = Validator.getString(in,"Do you want to close an account?(y/n)");
 
 		while (choice3.equalsIgnoreCase("y")) {
-			int acct_n = Validator.getInt(in,
-					"Please enter the account number: ");
+			int acct_n = Validator.getInt(in,"Please enter the account number: ");
 			double bal3 = map.get(acct_n).getAccount_bal();
 			if (bal3 == 0) {
 				map.remove(acct_n);
@@ -229,16 +217,13 @@ public class BankApp {
 				System.out.println("The balance of account# " + acct_n + " is "
 						+ bal3 + " , cannot be removed!");
 			}
-			choice3 = Validator.getString(in,
-					"Do you want to close an account?(y/n)");
+			choice3 = Validator.getString(in,"Do you want to close an account?(y/n)");
 		}
 		System.out.println("Welcome back!");
 	}
 
 	public static double getElapsedDay(Date aaa) {
-
 		double elapsedDay;
-
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(aaa);
 		int year = cal.get(Calendar.YEAR);
@@ -252,7 +237,6 @@ public class BankApp {
 		long startDateMS = start.getTime();
 		Date end = d.getTime();
 		long endDateMS = end.getTime();
-
 		long elapsedMS = endDateMS - startDateMS;
 		elapsedDay = elapsedMS / (24 * 60 * 60 * 1000);
 		return elapsedDay;
