@@ -107,6 +107,7 @@ public class BankApp {
 					isValid = false;
 				}
 			}
+			
 			amount = Validator.getDouble(in, "Enter the amount of the " + type+ " :");
 			System.out.println("Enter the date of the " + type + " :");
 			String aaa = in.next();
@@ -166,7 +167,7 @@ public class BankApp {
 			
 			//Recover the balance.
 			map.get(number2).setAccount_bal(temp_balance);
-			System.out.println(map.get(number2).getAccount_bal());
+			//System.out.println(map.get(number2).getAccount_bal());
 			i++;
 			choice2 = Validator.getType(in,"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or q to finish :");
 
