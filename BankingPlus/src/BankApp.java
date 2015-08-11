@@ -21,8 +21,7 @@ public class BankApp {
 
 		// Read from file myText.txt
 		try {
-			File file = new File(
-					"C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt");
+			File file = new File(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine()) {
@@ -159,29 +158,7 @@ public class BankApp {
 		 * = map2.get(x).getAcct_num();
 		 * map.get(acctnum).calbal_m(map2.get(x).getAmount()); } }
 		 */
-		// Empty myText.txt
-		FileWriter fileOut = new FileWriter("C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt");
-		fileOut.write("");
-		fileOut.close();
-
-		// Write the whole account map to myText.txt
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter(new File("C:\\Users\\rvhu321005ur\\workspace\\BankingPlus\\src\\myText.txt"));
-		} catch (FileNotFoundException e) {
-			System.out.println("File does not exist!");
-		} finally {
-			Iterator<Integer> iterator = map.keySet().iterator();
-			while (iterator.hasNext()) {
-				int key = iterator.next();
-				// String value = map.get(key).toString();
-				int temp_num = map.get(key).getAccount_num();
-				String temp_name = map.get(key).getAccount_name();
-				double temp_bal = map.get(key).getAccount_bal();
-				writer.println(temp_num + "," + temp_name + "," + temp_bal);
-			}
-		}
-		writer.close();
+		
 
 		// print account and transaction.
 		System.out.println("********************************************");
@@ -219,6 +196,31 @@ public class BankApp {
 			}
 			choice3 = Validator.getString(in,"Do you want to close an account?(y/n)");
 		}
+		
+		// Empty myText.txt
+				//System.out.println(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
+				FileWriter fileOut = new FileWriter(System.getProperty("user.dir") + File.separatorChar +"myText.txt");
+				fileOut.write("");
+				fileOut.close();
+
+				// Write the whole account map to myText.txt
+				PrintWriter writer = null;
+				try {
+					writer = new PrintWriter(new File(System.getProperty("user.dir") + File.separatorChar +"myText.txt"));
+				} catch (FileNotFoundException e) {
+					System.out.println("File does not exist!");
+				} finally {
+					Iterator<Integer> iterator = map.keySet().iterator();
+					while (iterator.hasNext()) {
+						int key = iterator.next();
+						// String value = map.get(key).toString();
+						int temp_num = map.get(key).getAccount_num();
+						String temp_name = map.get(key).getAccount_name();
+						double temp_bal = map.get(key).getAccount_bal();
+						writer.println(temp_num + "," + temp_name + "," + temp_bal);
+					}
+				}
+				writer.close();
 		System.out.println("Welcome back!");
 	}
 
